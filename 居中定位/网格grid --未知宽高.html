@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>网格 grid--未知宽高</title>
+    <!-- 在移动端只要不考虑特别低版本的手机的话基本上都可以用了。 -->
+
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+
+      /* 中间盒子的直接父元素 */
+      body {
+        /* 令其变成网格布局 */
+        display: grid;
+
+        /* 网格布局的两种实现： */
+        /* 1、 */
+        /* 令其子元素居中 */
+        /* place-items: center; */
+
+        /* 2、 */
+        /* 子元素水平居中 */
+        justify-content: center;
+        /* 子元素垂直居中 */
+        align-items: center;
+      }
+      .center {
+        /* 不用给定宽高，但是可以给个内边距防止内容过于贴合 */
+        padding: 10px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">网格布局 --未知宽高</div>
+  </body>
+</html>
+<!-- 总结 -->
+<!-- 
+  代码少，没什么学习成本
+ /* 令其变成网格布局 */
+display: grid;
+/* 令其子元素居中 */
+place-items: center;
+ -->
+
+<!-- 
+   第二种：
+    /* 子元素水平居中 */
+        justify-content: center;
+        /* 子元素垂直居中 */
+        align-items: center;
+  -->

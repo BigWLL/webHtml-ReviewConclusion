@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flex 九宫格</title>
+    <!-- 在移动端只要不考虑特别低版本的手机的话基本上都可以用了。 -->
+
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+      .square{
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* padding百分比是相对父元素宽度计算的 */
+  margin-bottom: 30px;
+}
+.square-inner{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* 铺满父元素容器，这时候宽高就始终相等了 */
+}
+.square-inner>li{
+  width: calc(98% / 3);  /* calc里面的运算符两边要空格 */
+  height: calc(98% / 3);
+  margin-right: 1%;
+  margin-bottom: 1%;
+  overflow: hidden;
+} 
+      .float > li{
+        float: left;
+        background: #42a59f;
+        text-align: center;
+        font-size: 40px;
+        line-height: 2;
+        list-style: none;
+      }
+      .float::after{
+        content: "";
+        clear: both;
+        display: block;
+      }
+      .float >li:nth-of-type(3n){
+        margin-right: 0;
+      }
+      .float > li:nth-of-type(n+7){
+        margin-bottom: 0;
+      }
+    
+    </style>
+  </head>
+  <body>
+    <div class="square">
+      <ul class="square-inner float">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+      </ul>
+    </div>
+</html>
+<!-- 总结 -->

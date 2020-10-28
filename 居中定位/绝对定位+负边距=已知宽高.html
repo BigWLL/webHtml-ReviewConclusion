@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>绝对定位+负边距</title>
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+
+      /* 先在父元素上设置相对定位 */
+      body {
+        position: relative;
+      }
+      .center {
+        position: absolute;
+        /* 上、左为50% */
+        top: 50%;
+        left: 50%;
+        /* 给定宽高 */
+        width: 300px;
+        height: 200px;
+        /* 上、左外边距为给定的高宽的一半 */
+        margin: -100px 0 0 -150px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center"></div>
+  </body>
+</html>
+<!-- 总结 -->
+<!-- 
+ 注意，"绝对定位+负边距"这种方法不适合那种宽百分之多少、高百分之多少这种相对单位，取而代之的是具体的数值。
+
+因为边距的百分比和宽高的百分比相对的不是同一参考物，它是相对于父元素的宽来计算的，这点要注意。
+
+ -->

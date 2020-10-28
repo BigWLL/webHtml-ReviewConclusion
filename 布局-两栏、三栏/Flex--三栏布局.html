@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flex 弹性盒子--未知宽高</title>
+    <!-- 在移动端只要不考虑特别低版本的手机的话基本上都可以用了。 -->
+
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+      body {
+        display: flex;
+      }
+      .main {
+        width: 50%;
+        margin: auto;
+        display: flex;
+      }
+
+      .left {
+        width: 300px;
+        height: 100px;
+        background: coral;
+      }
+      .right {
+        width: 300px;
+        height: 100px;
+        background: cornflowerblue;
+      }
+      .center {
+        word-break: break-word;
+        height: 100px;
+        background: rgb(143, 237, 100);
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="left"></div>
+      <div class="center">
+        <h2>
+          浮动布局-中间的框是自适应大小，设置了margin-left：300px;
+          和margin-right： 300px; 如果不设置margin-left：300px; 和margin-right：
+          300px;当内容超出框的大小，内容会溢出，会往左下角偏;
+        </h2>
+      </div>
+      <div class="right"></div>
+    </div>
+  </body>
+</html>
+<!-- 总结 -->
+<!-- 
+  代码少，没什么学习成本
+  1、子元素中设置margin： auto
+        margin: auto;
+ -->
+
+<!-- 
+   flex: 1; === flex: 1 1 任意数字+任意长度单位;
+ -->
+<!-- 
+
+可以看出最重要的一点在 第三个参数 flex-basis 上, 我们再来回顾以下 这个属性的作用
+
+flex-basis给上面两个属性分配多余空间之前, 计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小
+auto 为表示项目本身的大小, 如果设置为 auto, 那么这三个盒子就会按照自己内容的多少来等比例的放大和缩小, 所以出现了上图中三个盒子不一样大的情况
+
+那我们如果随便设置一个其他带有长度单位的数字呢, 那么他就不会按项目本身来计算, 所以它不关心内容, 只是把空间等比收缩和放大
+ -->

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Float 三栏布局</title>
+    <!-- 在移动端只要不考虑特别低版本的手机的话基本上都可以用了。 -->
+
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+      body {
+        display: flex;
+      }
+      .main {
+        width: 50%;
+        margin: auto;
+      }
+      /* float 会脱离文档流，为了不影响其他布局，需清楚浮动 */
+      .main::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .left {
+        float: left;
+        width: 300px;
+        height: 100px;
+        background: coral;
+      }
+      .right {
+        float: right;
+        width: 300px;
+        height: 100px;
+        background: cornflowerblue;
+      }
+      .center {
+        /* 要设置margin 否则内容超出 会向左溢出 */
+        margin-left: 300px;
+        margin-right: 300px;
+
+        height: 100px;
+        background: rgb(143, 237, 100);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="left"></div>
+      <div class="right"></div>
+      <div class="center">
+        <h2>
+          浮动布局-中间的框是自适应大小，设置了margin-left：300px;
+          和margin-right： 300px; 如果不设置margin-left：300px; 和margin-right：
+          300px;当内容超出框的大小，内容会溢出，会往左下角偏;
+        </h2>
+      </div>
+    </div>
+  </body>
+</html>
+<!-- 总结 -->
+<!-- 
+  代码少，没什么学习成本
+  1、子元素中设置margin： auto
+        margin: auto;
+ -->

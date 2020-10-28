@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>绝对定位+平移=未知宽高</title>
+    <!-- 有时候盒子的内容是要靠后台数据决定的，如果写死宽高，当数据多时则会溢出，数据少时则会空出一片，所以我们需要一种更加智能的方式来实现。 -->
+    <!-- 
+
+      绝对定位 + 平移 是 绝对定位 + 负边距的改进版，那么具体都改进了哪些方面呢？ 
+      负边距的百分比并不是相对于自身，而是相对于父元素，所以只能写具体的像素值，显得不够智能。
+      而平移相对于自身，只需要无脑写 -50% 就可以了:
+     -->
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+
+      /* 先在父元素上设置相对定位 */
+      body {
+        position: relative;
+      }
+      .center {
+        position: absolute;
+        /* 上、左为50% */
+        top: 50%;
+        left: 50%;
+        /* 不用给定宽高，但是可以给个内边距防止内容过于贴合 */
+        padding: 10px;
+        /* 设置平移--这个50%是相对于自身宽高而言的 */
+        transform: translate(-50%, -50%);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">绝对定位 + 平移 --未知宽高</div>
+  </body>
+</html>
+<!-- 总结 -->
+<!-- 
+  margin的百分比是相对于父元素的宽；
+  而translate函数的百分比是相对于自身；
+  不仅适用于未知宽高，也同样适用于固定宽高的居中布局；
+ -->

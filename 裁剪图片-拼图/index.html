@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css裁剪图片-拼图</title>
+    <script src="game.js"></script>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        display: flex;
+      }
+      #container {
+        margin: auto;
+        width: 1200px;
+        overflow: hidden;
+      }
+      #toolbar {
+        height: 150px;
+        border: 1px solid rgb(149, 149, 158);
+        position: relative;
+      }
+      #toolbar input {
+        margin: 12px;
+      }
+      .level {
+        float: left;
+        border-right: 1px solid #ccc;
+        height: 65px;
+        margin-left: 20px;
+      }
+      h4{
+        display: inline-block;
+      }
+      .image-breviary {
+        margin: 20px;
+        border-top: 1px solid #ccc;
+      }
+      #toolbar img {
+        width: 50px;
+        height: 50px;
+        margin-top: 10px;
+      }
+      .content{
+        width: 100%;
+        position: relative;
+      }
+      .content::after{
+        content: "";
+        display: block;
+        clear: both;
+      }
+      #game_left {
+        width: 600px;
+        float: left;
+        border: 1px solid rgb(131, 131, 138);
+        height: 600px;
+      }
+      #game_right {
+        width: 590px;
+        height: 590px;
+        float: left;
+        padding: 3.5px;
+        /* border: 1px solid rgb(159, 159, 163); */
+      }
+      #game_right img {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+    </style>
+  </head>
+  <body onload="ready()">
+    <!-- 使用css3 实现裁剪图片  利用convase画布实现裁剪和重绘(随机数实现)图片随机排列 -->
+    <div id="container">
+      <div id="toolbar">
+        <div class="level">
+          <h4>level：</h3>
+          <input
+            type="button"
+            name=""
+            id=""
+            value="简单2*2"
+            onclick="initGame(2)"
+          />
+          <input
+            type="button"
+            name=""
+            id=""
+            value="复杂3*3"
+            onclick="initGame(3)"
+          />
+          <input
+          type="button"
+          name=""
+          id=""
+          value="复杂4*4"
+          onclick="initGame(4)"
+        />
+        </div>
+
+        <input type="button" name="" id="" value="重置" onclick="reset()" />
+        <input type="button" name="" id="" value="完成" onclick="done()" />
+
+        &nbsp;&nbsp;
+        <div class="image-breviary">
+          <img src="image/1.jpg" onclick="changePic(this)" />
+          <img src="image/2.jpg" onclick="changePic(this)" />
+          <img src="image/3.jpg" onclick="changePic(this)" />
+          <img src="image/9.png" onclick="changePic(this)" />
+        </div>
+      </div>
+      <div class="content">
+        <div id="game_left">
+          <canvas id="puzzle" width="600" height="600" onclick="move(event)"></canvas>
+        </div>
+        <div id="game_right">
+          <img id="cankao" src="image/1.jpg" />
+        </div>
+      </div>
+    </div>
+    <!-- <div style="width: 3824px; height: 2160px">
+      <img src="image/2.jpg" style="width: 100%; height: 100%" />
+    </div> -->
+  </body>
+</html>

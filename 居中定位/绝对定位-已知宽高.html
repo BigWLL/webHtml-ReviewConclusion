@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width,viewport-fit=cover"
+    />
+    <title>绝对定位实现居中</title>
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      /* 全屏显示，并且有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+      /* 父元素上设置相对定位 */
+      body {
+        position: relative;
+      }
+      .center {
+        /* 绝对定位 */
+        position: absolute;
+        /* 上下左右全部为0 */
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        /* 给定宽高 */
+        width: 70%;
+        height: 300%;
+        /* 令外边距自动填充 */
+        /* margin: auto; */
+        /* 白色背景 */
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 绝对定位法实现居中，适合固定宽高 -->
+    <div class="center"></div>
+  </body>
+  <script>
+    //防抖debounce代码：
+    function debounce(fn, delay) {
+      var timeout = null; // 创建一个标记用来存放定时器的返回值
+      return function (e) {
+        // 每当用户输入的时候把前一个 setTimeout clear 掉
+        clearTimeout(timeout);
+        // 然后又创建一个新的 setTimeout, 这样就能保证interval 间隔内如果时间持续触发，就不会执行 fn 函数
+        timeout = setTimeout(() => {
+          fn.apply(this, arguments);
+        }, delay);
+      };
+    }
+    // 处理函数
+    function handle() {
+      console.log("防抖：", Math.random());
+    }
+
+    //滚动事件
+
+    window.addEventListener("scroll", debounce(handle, 500));
+
+    //节流throttle代码：
+    function throttle(fn, delay) {
+      let canRun = true; // 通过闭包保存一个标记
+      return function () {
+        // 在函数开头判断标记是否为true，不为true则return
+        if (!canRun) return;
+        // 立即设置为false
+        canRun = false;
+        // 将外部传入的函数的执行放在setTimeout中
+        setTimeout(() => {
+          // 最后在setTimeout执行完毕后再把标记设置为true(关键)表示可以执行下一次循环了。
+          // 当定时器没有执行的时候标记永远是false，在开头被return掉
+          fn.apply(this, arguments);
+          canRun = true;
+        }, delay);
+      };
+    }
+
+    function sayHi(e) {
+      console.log("节流：", e.target.innerWidth, e.target.innerHeight);
+    }
+
+    window.addEventListener("resize", throttle(sayHi, 3000));
+  </script>
+</html>
+
+<!-- 总结 -->
+<!-- 如果不给定宽高，盒子将会和父元素一样大，因为绝对定位上下左右都是0，意为紧贴着父元素的边 -->
+<!-- 给定了固定宽高，但是没写margin的话盒子会固定在左上角，因为top和left的优先级更高-->
+<!-- 给了margin：auto；的话浏览器会自动填充边距，令其居中 -->
+<!-- 此种实现方式优点是兼容性很好，几乎没有任何css的新特性，全部是经典属性 -->

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flex 弹性盒子--未知宽高</title>
+    <!-- 在移动端只要不考虑特别低版本的手机的话基本上都可以用了。 -->
+
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+
+      /* 中间盒子的直接父元素 */
+      body {
+        /* 令其变成Flex布局 */
+        display: flex;
+
+        /* 2、 */
+        /* 子元素水平居中 */
+        /* justify-content: center; */
+        /* 子元素垂直居中 */
+        /* align-items: center; */
+      }
+      .center {
+        /* 1、自动外边距 */
+        margin: auto;
+        /* 不用给定宽高，但是可以给个内边距防止内容过于贴合 */
+        padding: 10px;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">网格布局 --未知宽高</div>
+  </body>
+</html>
+<!-- 总结 -->
+<!-- 
+  代码少，没什么学习成本
+  1、子元素中设置margin： auto
+        margin: auto;
+ -->
+
+<!-- 
+   第二种：在父元素中设置：
+    /* 子元素水平居中 */
+        justify-content: center;
+        /* 子元素垂直居中 */
+        align-items: center;
+  -->

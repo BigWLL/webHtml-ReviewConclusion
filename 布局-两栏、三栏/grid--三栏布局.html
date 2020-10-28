@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>grid 网格 三栏布局</title>
+
+    <style>
+      /* 清除默认样式 */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 令html和body全屏显示, 并有一个灰色背景 */
+      html,
+      body {
+        height: 100%;
+        background: gray;
+      }
+      body {
+        display: flex;
+      }
+      .main {
+        width: 50%;
+        margin: auto;
+        display: grid;
+        grid-template-rows: 100px;
+        grid-template-columns: 300px auto 300px;
+      }
+      .left {
+        background: crimson;
+      }
+      .right {
+        background: cyan;
+      }
+      .center {
+        background: darkgoldenrod;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="left"></div>
+      <div class="center">
+        <h2>
+          浮动布局-中间的框是自适应大小，设置了margin-left：300px;
+          和margin-right： 300px; 如果不设置margin-left：300px; 和margin-right：
+          300px;当内容超出框的大小，内容会溢出，会往左下角偏;
+        </h2>
+      </div>
+      <div class="right"></div>
+    </div>
+  </body>
+</html>
+<!-- 总结 -->
