@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机数</title>
+</head>
+<body>
+  <div>
+    <h4>随机数：</h4>
+    <p>Math.random()    产生0-1之间的随机数</p>
+    <p>Math.floor(Math.random() * count + start):</p>
+    <p>注释： count：可能值得总数（随机数）， start： 第一个可能的值, Math.floor()向下取整</p>
+    <p>1、产生1-10的随机数</p>
+    <p>2、编写产生startNumber至endNumber随机数的函数(几到几的随机数)</p>
+    <p>3、在不相邻的多个随机数中产生一个随机数</p>
+    <h4>舍入</h4>
+    <p>Math.floor(x);向下舍入；  floor() 方法返回小于等于x的最大整数。</p>
+    <p>Math.ceil(x);向上舍入； ceil() 方法返回大于等于 x，并且与它最接近的整数。。</p>
+    <p>Math.round(x);四舍五入： round() 方法可把一个数字舍入为最接近的整数</p>
+    <p></p>
+    <p>for in遍历的是数组的索引（即键名），而for of遍历的是数组元素值。</p>
+  </div>
+</body>
+<script>
+  // 随机数
+  // 产生相邻的随机数，（1-10之间）
+  function selectNum(count, start){
+    return Math.floor(Math.random() * count + start);
+  }
+  var rand = selectNum(10,1);
+  console.log('1到10的随机数：',rand)
+
+
+
+// 编写产生startNumber至endNumber随机数的函数
+function randomNum(startNum, endNum){
+  var choice = endNum - startNum + 1;
+  return Math.floor(Math.random() * choice + startNum)
+}
+var rand1 = randomNum(3,12);
+  console.log('3到12的随机数：',rand1)
+
+
+
+  // 在不相邻的多个随机数中产生一个随机数
+  function randomNum2(arr){
+    return arr[Math.floor(Math.random() * arr.length)]
+  }
+  var arrTxt =['一等奖','二等奖','三等奖'];
+  var array = [3,4,6,10,5]
+
+  var rand2=randomNum2(arrTxt);
+  var rand3=randomNum2(array);
+  console.log('随机产生一等奖二等奖三等奖中的一个数：',rand2);
+  console.log('随机产生3,4,6,10,5中的一个数',rand3);
+
+
+</script>
+</html>

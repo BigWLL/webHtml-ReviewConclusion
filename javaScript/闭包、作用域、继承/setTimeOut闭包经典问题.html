@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原型、闭包、继承</title>
+</head>
+<body>
+  <div>
+    <h4>1、setTimeOut返回值 经典问题？</h4>
+  </div>
+</body>
+<script>
+  // setTimeOut返回值 经典问题？
+  // 以下代码的返回结果是：
+  function fn() {
+    for (var i = 0; i < 5; i++) {
+    setTimeout(() => {
+        console.log(new Date(), i);
+    }, 1000);
+  }
+  console.log(new Date(), i);
+  };
+  // fn();
+    //Mon Nov 16 2020 16:17:38 GMT+0800 (中国标准时间) 5
+    // Mon Nov 16 2020 16:17:39 GMT+0800 (中国标准时间) 5
+    // Mon Nov 16 2020 16:17:39 GMT+0800 (中国标准时间) 5
+    // Mon Nov 16 2020 16:17:39 GMT+0800 (中国标准时间) 5
+    // Mon Nov 16 2020 16:17:39 GMT+0800 (中国标准时间) 5
+    // Mon Nov 16 2020 16:17:39 GMT+0800 (中国标准时间) 5
+    
+    // 改正的办法：
+    //1、使用let
+    function fn1(){
+      for(let i=0; i<5; i++){
+        setTimeout(() => {
+          console.log(new Date(), i);
+        },1000);
+      }
+      console.log(new Date(), i);
+    }
+    // fn1();
+    //使用let后 for循环外的i将不能被访问，会报错：i is not defined
+    
+    //2、使用闭包
+    function fn2(){
+      for(var i=0; i<5; i++){
+        ~function(i){
+          setTimeout(() => {
+          console.log(new Date(), i);
+        },1000);
+        }(i)
+      }
+      console.log(new Date(), i);
+    }
+    // fn2();
+    //结果：
+    //  Mon Nov 16 2020 17:11:27 GMT+0800 (中国标准时间) 5
+
+    //  on Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 0
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 1
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 2
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 3
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 4
+
+
+      /**
+       * 备注： IIFE 立即执行函数的几种写法：只有函数表达式才能写成以下几种
+       * 只有函数表达式可以被立即调用,函数声明不可以
+      * (function foo(){}());
+      *  (function foo(){})();
+      *  !function foo() {}();
+      *  +function foo() {}();
+      *  -function foo() {/}();
+      *  ~function foo() {}();
+      * */ 
+
+    //3、 另一种闭包
+function fn3(){
+     for (var i = 0; i < 5; i++) {
+        setTimeout((i=>()=>console.log(new Date(),i))(i), 1000)
+    }
+      console.log(new Date(), i);
+}
+// fn3()
+ //结果：
+    //  Mon Nov 16 2020 17:11:27 GMT+0800 (中国标准时间) 5
+
+    //  on Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 0
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 1
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 2
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 3
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 4
+
+   // 4、可以基于bind的预先处理机制：在循环的时候就把每次执行函数需要输出的结果，预先传给函数即可
+   function fn4(){
+    var fnn = function(i){console.log(new Date(),i)};  
+    for(var i=0; i<5; i++){
+      setTimeout(fnn.bind(null,i),(1000))
+    }
+    console.log(new Date(), i); 
+   }
+   fn4();
+   //结果：
+    //  Mon Nov 16 2020 17:11:27 GMT+0800 (中国标准时间) 5
+
+    //  on Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 0
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 1
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 2
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 3
+    //  Mon Nov 16 2020 17:11:28 GMT+0800 (中国标准时间) 4
+</script>
+</html>
