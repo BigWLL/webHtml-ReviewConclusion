@@ -4,14 +4,166 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>瀑布流</title>
+  <style>
+    html{
+      font-size: 625%;
+    }
+    .waterfall {
+      /* max-width: 600px;
+      margin: 0 auto; */
+      position: relative;
+      font-size: .08rem;
+    }
+    .waterfall img {
+      position: absolute;
+      width: 100px;
+	    margin: 10px;
+      /* 布局transition效果 */
+      transition: all .4s;
+    }
+  </style>
 </head>
 <body>
+  <div class="waterfall">
+      <img src="http://via.placeholder.com/100x100" alt="100*100" style="left: 0px; top: 0px;">
+      <img src="http://via.placeholder.com/100x70" alt="100*70" style="left: 120px; top: 0px;">
+      <img src="http://via.placeholder.com/100x150" alt="100*150" style="left: 0px; top: 44px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 120px; top: 44px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 0px; top: 88px;">
+      <img src="http://via.placeholder.com/100x90" alt="100*90" style="left: 120px; top: 88px;">
+      <img src="http://via.placeholder.com/100x120" alt="100*120" style="left: 0px; top: 132px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 120px; top: 132px;">
+      <img src="http://via.placeholder.com/100x230" alt="100*230" style="left: 0px; top: 176px;">
+      <img src="http://via.placeholder.com/100x100" alt="100*100" style="left: 120px; top: 176px;">
+      <img src="http://via.placeholder.com/100x70" alt="100*70" style="left: 0px; top: 220px;">
+      <img src="http://via.placeholder.com/100x150" alt="100*150" style="left: 120px; top: 220px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 0px; top: 264px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 120px; top: 264px;">
+      <img src="http://via.placeholder.com/100x90" alt="100*90" style="left: 0px; top: 308px;">
+      <img src="http://via.placeholder.com/100x120" alt="100*120" style="left: 120px; top: 308px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 0px; top: 352px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 120px; top: 352px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 0px; top: 396px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 120px; top: 396px;">
+      <img src="http://via.placeholder.com/100x90" alt="100*90" style="left: 0px; top: 440px;">
+      <img src="http://via.placeholder.com/100x120" alt="100*120" style="left: 120px; top: 440px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 0px; top: 484px;">
+      <img src="http://via.placeholder.com/100x100" alt="100*100" style="left: 120px; top: 484px;">
+      <img src="http://via.placeholder.com/100x70" alt="100*70" style="left: 0px; top: 528px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 120px; top: 528px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 0px; top: 572px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 120px; top: 572px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 0px; top: 616px;">
+      <img src="http://via.placeholder.com/100x230" alt="100*230" style="left: 120px; top: 616px;">
+      <img src="http://via.placeholder.com/100x100" alt="100*100" style="left: 0px; top: 660px;">
+      <img src="http://via.placeholder.com/100x70" alt="100*70" style="left: 120px; top: 660px;">
+      <img src="http://via.placeholder.com/100x150" alt="100*150" style="left: 0px; top: 704px;">
+      <img src="http://via.placeholder.com/100x150" alt="100*150" style="left: 120px; top: 704px;">
+      <img src="http://via.placeholder.com/100x230" alt="100*230" style="left: 0px; top: 748px;">
+      <img src="http://via.placeholder.com/100x70" alt="100*70" style="left: 120px; top: 748px;">
+      <img src="http://via.placeholder.com/100x150" alt="100*150" style="left: 0px; top: 792px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 120px; top: 792px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 0px; top: 836px;">
+      <img src="http://via.placeholder.com/100x90" alt="100*90" style="left: 120px; top: 836px;">
+      <img src="http://via.placeholder.com/100x120" alt="100*120" style="left: 0px; top: 880px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 120px; top: 880px;">
+      <img src="http://via.placeholder.com/100x250" alt="100*250" style="left: 0px; top: 924px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 120px; top: 924px;">
+      <img src="http://via.placeholder.com/100x80" alt="100*80" style="left: 0px; top: 968px;">
+      <img src="http://via.placeholder.com/100x90" alt="100*90" style="left: 120px; top: 968px;">
+      <img src="http://via.placeholder.com/100x120" alt="100*120" style="left: 0px; top: 1012px;">
+      <img src="http://via.placeholder.com/100x210" alt="100*210" style="left: 120px; top: 1012px;">
+  </div>
   <!-- JavaScript实现瀑布流 -->
   <!-- 
     原理：
      1、设置图片宽度一致；
-     2、根据浏览器宽度
-
+     2、根据浏览器宽度以及每列宽度 计算出列表个数，列表默认值为0；
+     3、当图片加载完成，所有图片依次放置在最小的列数下面。
+     4、父容器的高度取列表数组的最大值。
    -->
+   <!-- 
+    获取宽高的方法：
+    返回窗口的文档显示区的宽（高）度；
+    height:屏幕分辨率高
+        当box-sizing: content-box时，高度应用到元素的内容框，包括content
+        当box-sizing： border-box时，高度包含了content+padding+border
+    clientHeight; //包含元素的content+padding   网页可见区域的高document.body.clientHeight
+    offsetHeight; //包含元素的content+padding+border+水平滚动条,为整数  元素的可见区域高（包括边线的高）document.body.offsetHeight
+          在没有滚动条时scrollHeight==clientHeight恒成立
+          在有滚动条时：scrollHeight>=clientHeight恒成立
+    offsetTop: 当前元素顶部距离最近父元素顶部的距离,和有没有滚动条没有关系
+    scrollHeight; //包括内容不可见的屏幕上由于溢出的高  网页正文全文高 document.body.scrollHeight
+    scrollTop： //网页被卷去的高  document.body.scrollTop
+          代表在有滚动条时当前元素顶部距离最近的"设置了position属性的"父元素的距离，如果没有设置的话就是针对于body顶部的距离
+          ，在没有滚动条时scrollTop==0恒成立     
+    innerWidth(); //包含content+padding
+    outerWidth();  //包含元素的content+padding+border
+    outerWidth(true); //包含元素的content+padding+border+margin
+    -->
 </body>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+<script>
+
+  var colCount = 0  //定义列数
+  var colHeightArry= []   //定义列高度数组
+  var imgWidth = $('.waterfall img').outerWidth(true)   //单张图片的宽度 outerWidth()包含padding和order，outerWidth(true)包含margin
+  
+  colCount = parseInt($('.waterfall').width() / imgWidth) //计算出列数
+  for(var i=0; i< colCount; i++){
+    colHeightArry[i] = 0
+  }
+  $('.waterfall img').on('load',function(){
+    var minValue = colHeightArry[0] //定义最小高度
+    var minIndex = 0 //定义最小高度的下标
+    for(var i=0; i<colCount; i++){
+      if(colHeightArry[i] < minValue){  //如果最小高度组数中的值小于最小值
+        minValue = colHeightArry[i];  // 那么认为最小高度数组中的值是真正的最小值
+        minIndex = i;   //最小下标为当前下标
+      }
+    }
+    $(this).css({
+      left: minIndex * imgWidth,
+      top: minValue
+    })
+    colHeightArry[minIndex] += $(this).outerHeight(true); // 累加计算出第n行的s列的高度，包括margin
+  })
+
+  // 当窗口大小重置之后，重新执行
+  $(window).on('resize', function(){
+    reset();
+  })
+
+  // 当窗口加载完毕
+  $(window).on('load',function(){
+    reset();
+  })
+
+  //定义reset函数
+  function reset(){
+    var colHeightArry = []
+    colCount = parseInt($('.waterfall').width()/imgWidth)
+    for(var i=0; i<colCount; i++){  //循环输出一列高度的数组，并赋初始值为0
+      colHeightArry[i] = 0
+    }
+    $('.waterfall img').each(function(){
+      var minValue = colHeightArry[0]
+      var minIndex = 0; // 下标
+      for(var i = 0; i < colCount; i++){
+        if(colHeightArry[i] < minValue){
+          minValue = colHeightArry[i];
+          minIndex = i
+        }
+      }
+
+      $(this).css({
+        left: minIndex * imgWidth,
+        top: minValue //当前img 距离顶部的高度为 高度数组中当前显示行中最小的gaodu
+      })
+      colHeightArry[minIndex] += $(this).outerHeight(true);
+    })
+  }
+
+
+</script>
 </html>
