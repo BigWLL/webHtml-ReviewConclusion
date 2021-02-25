@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>柯里化函数</title>
+</head>
+<body>
+  
+</body>
+<script type="text/javascript">
+  // 柯里化函数
+  /**
+   * 是把接受多个参数的函数变化成接受一个单一参数（最初函数的第一个参数）的函数，
+   * 并且返回接受余下的参数 而且 返回结果 的新函数的技术；
+   * 
+   * 或者
+   * 
+   * 柯里化(Currying)指的是将原来接受两个参数的函数变成新的接受一个参数的函数的过程。
+   * 新的函数返回一个以原有第二个参数为参数的函数。
+   * 
+   * 原理：
+   * currying函数的实质其实就是预先存储的概念，利用了闭包的特性来保存中间过程中输入的参数。
+   * 柯里化的过程是逐步传参，逐步缩小函数的适用范围，逐步求解的过程。
+   * */ 
+  // 一个简单的柯里化函数
+   function _add(a){
+    return function(b){
+      return function(c){
+        return a + b + c;
+      }
+    }
+  }
+  _add(1,2,3);
+  /**
+ *输出什么
+ * 0.1 + 0.2 = ？
+ *  在实际中应该答案是 0.3  但是在计算机中输出的0.30000000000000004
+ * 原因：
+ * JavaScript中number类型就是浮点型，JavaScript中的浮点数采用IEEE-754格式的规定，这是一种二进制表示法，可以精确的表示分数，比如
+ * 1/2、1/8 每个浮点数占64位，但是，二进制浮点数表示法并不能精确的表示类似0.2这样的简单的数字，会有舍入误差。
+ * 
+ * */ 
+
+// 解决： 方法一
+// 采用先升幂 再降幂（支持小数、整数、小数+整数、多个参数）求和
+ function add (num1, num2){
+  let r1,r2,m;
+  r1 = (''+num1).split('.')[1].length;
+  r2 = (''+num2).split('.')[1].length;
+  m = Math.pow(10,Math.max(r1,r2));
+  return (num1*m + num2*m)/m;
+}
+console.log(add(0.1,0.2))
+
+// 升级
+// 支持n个参数相加
+function addArray(){
+  var arg = [...arguments];
+  if(arg.length == 1){
+    return arg[0];
+  }
+  let MaxArray = [],
+      m,
+      sum;
+      
+  // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
+  var fn = function(){
+    arg.push(...arguments);
+    return fn;
+  };
+// 处理传入的参数，若有小数时 找出小数点的最大位数
+  for(let i=0; i<arg.length; i++){
+    if(parseInt(arg[i])==arg[i]){
+      MaxArray.push(0)
+    }else{
+      MaxArray.push(
+      (''+ arg[i]).split('.')[1].length
+    )
+    } 
+  }
+  // 找出最大的小数点位数，用于升降幂运算
+  m = Math.pow(10, Math.max.apply(null,MaxArray));
+  fn.toString = function(){
+    return arg.reduce((pre, cur)=>{
+      return pre + cur * m ;
+    }, 0) / m;
+  }
+  return fn;
+}
+console.log(addArray(12))
+//注：在调用apply的时候第一个参数给了一个null，这个是因为没有对象去调用这个方法，我们只需要用这个方法帮我们运算，
+//得到返回的结果就行，所以就直接传递了一个null过去。
+//对象（包括数组，对象，函数等）参与原始运算如算术或逻辑运算时，
+//会无参调用其toString或者valueOf方法得到一个原始值，然后用这个原始值参与运算，
+</script>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随便写写测测</title>
+  <style>
+    body{
+      min-height: 1000px;
+    }
+    .snajiao{
+      width: 0;
+      height: 0;
+      border: 20px solid;
+      border-color: #333 transparent transparent transparent;
+      position: relative;
+    }
+    .snajiao::after{
+      content: ' ';
+      width: 0;
+      height: 0;
+      position: absolute;
+      top:2px;
+      left: 2px;
+      border: 18px solid;
+      border-color: rgb(247, 244, 244) transparent transparent transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="snajiao"></div>
+  </div>
+
+  <div id= 'virtualDom'></div>
+  <div class='inner'></div>
+</body>
+<script>
+  foo();
+  function foo(){
+    console.log(a);
+    var a= '123'
+  }
+  
+
+  // foo1();
+  var foo1 = function (){
+    console.log(b);
+    var b = '456'
+  }
+
+  function settime(){
+    for(var i=0; i < 5; i++){
+      ~(function(i){
+        setTimeout(()=>{
+          console.log(i)
+        },1000)
+      })(i)
+    }
+  }
+  settime();
+  
+  function srttime1(){
+    for(var i=0;i< 5; i++){
+      setTimeout(
+        ~function(i){
+          ~function(){console.log(i)}()
+        }(i)
+      ,1000)
+    }
+  }
+  srttime1()
+
+  var fo = function(i){console.log(i)}
+  for(var i=0; i<5; i++){
+    setTimeout(fo.bind(null,i),1000)
+  } 
+</script>
+<!-- 虚拟dom -->
+<script>
+  /**
+   * @param tageName 节点名（如div） 
+   * @param  props 节点的属性（如class）
+   * @param children 子节点（如ul的li）
+   * */ 
+  function Element(tagName, props, children){
+    if(!(this instanceof Element)){
+      return new Element(tagName, props, children);
+    }
+    this.tagName = tagName;
+    this.props = props || {};
+    this.children = children || [];
+    this.key = props ? props.key : undefined;
+
+    let count = 0;
+    this.children.forEach(item => {
+      if(item instanceof Element){
+        count += item.count;
+      }
+      count++
+    });
+    this.count = count;
+  };
+  var elem = Element({
+    tagName: 'ul',
+    props: {
+      'class': 'list'
+    },
+    children: [
+      Element({
+        tagName: 'li',
+        props: {},
+        children:['list1']
+      }),
+      Element({
+        tagName: 'li',
+        props: {},
+        children:['list2']
+      }),
+      Element({
+        tagName: 'li',
+        props: {},
+        children:['list3']
+      }),
+    ]
+  })
+  const tree = Element('div',{id: 'virtual-container'}, [
+    Element('div',{}, ['Virtual DOM']),
+    Element('div',{},['before update']),
+    Element('ul',{},[
+      Element('li',{class: 'item'}, ['Item 1']),
+      Element('li',{class: 'item'}, ['Item 2']),
+      Element('li',{class: 'item'}, ['Item 3']),
+    ])
+  ]);
+ // 转换真是的DOM
+ Element.prototype.render = function (){
+    var el = document.createElement(this.tagName)
+    props = this.props;
+    let propName
+    let propValue
+    for(propName in props){
+      propValue = props[propName]
+      el.setAttribute(propName,propValue)
+    }
+    this.children.forEach(child=>{
+      let childE1 = null;
+      if(child instanceof Element){
+        childE1 = child.render()
+      } else {
+        childE1 = document.createTextNode(child)
+      }
+      el.appendChild(childE1);
+    })
+    return el;
+  }
+  const root = tree.render();
+  console.log(document.getElementById('virtualDom'));
+  document.getElementById('virtualDom').appendChild(root);
+
+ 
+</script>
+
+<script>
+  var divs = document.getElementsByTagName('div');
+  console.log(divs)
+  // for(var i = 0;  i < divs.length; i++){
+  //   document.body.append(document.createElement('div'))
+  // }
+  // 以上的写法：会产生死循环，这段代码并没有像我们想象的那样在多打印出几个div，但是，实际上，因为每次添加完一个div后
+   // divs.length 都会被更新（加一），所以这个循环永远不会停止，。
+
+  //  解决办法：‘’‘’  利用len变量 做了一个暂存
+   let len=divs.length;
+   for(var i = 0;  i < len; i++){
+    document.body.append(document.createElement('div'))
+    
+  }
+  let a=document.getElementsByClassName('inner');  //获取的是一个集合，注意：在遍历集合的时候最好把他先存在数组中，在进行遍历
+  for(var i=0; i<a.length; i++){
+    a[i].innerHTML=`<p>你好啊</p>`
+  }
+
+  // 防抖
+  /**
+   * 在第一次触发事件时，不立即执行函数，而是给出一个期限值比如200ms，
+   * 如果在200ms内没有再次触发事件，那么就执行函数，
+   * 如果在200ms内又触发了事件，那么当前的计时取消，重新计时；
+   * 
+   * 效果：
+   * 如果短时间内大量触发同一事件，只会执行一次。
+   * */ 
+  /**
+ * 防抖函数 - 延迟执行版
+ *   场景介绍: 1.搜索框联想,等用户输入完毕后,延迟n秒后,检索出匹配的关键词
+ * @param func 真正执行的业务函数
+ * @param wait 延迟时间
+ * @returns {()=>undefined}
+ */
+  function  debounce(fn, delay){
+    let timer = null;//（借助闭包）定义一个变量来保存计时
+    return function(){
+      if(timer){
+        clearTimeout(timer);
+      }
+      timer = setTimeout(fn, delay);
+    }
+  }
+  // 滚动
+  function showTop(){
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    console.log('滚动条位置：' + scrollTop);
+  }
+
+  window.onscroll = debounce(showTop, 1000);
+// 结果
+//对于短时间内连续触发的事件,防抖的含义就是让某个时间期限（如上面的1000毫秒）内，事件处理函数只执行一次。
+// 弊端
+// 如果在限定时间段内，不断触发滚动事件（比如某个用户闲着无聊,按住关东不断的拖来拖去）只要不停触发，
+//理论上就永远不会输出当前距离顶部的距离。
+// 在思考：
+/**
+ * 如果方案是：即使用户不断拖动滚动条，也能在某个时间间隔之后给出反馈
+ * 
+ * 这就用到节流的思想；
+ * 我们可以设计一种类似控制阀门一样定期开放的函数，也就是让函数执行一次后，在某个时间段暂时失效，
+ * 过了这段时间后再重新激活（类似于技能冷却时间）
+ * 
+ * 效果：
+ * 如果短时间内大量触发同一事件，那么在函数执行一次之后，该函数在指定的时间期限内不再工作，直至过了这段时间才重新生效。
+ * 
+ * 实现：
+ * 这里借助setTimeOut来做一个简单的实现，加上一个状态位 valid 来表示当前函数是否处于工作状态：
+ * 
+ * */ 
+function throttle(fn, delay){
+  let valid = true;
+  return function(){
+    if(!valid){
+      // 休息时间，暂时不接客
+      return false; 
+    }
+    // 否则：工作时间，执行函数并且在间隔期内把状态位设为无效
+    valid = false;
+    setTimeout(()=>{
+      fn();
+      valid = true;
+    },delay)
+  }
+}
+window.onscroll = throttle(showTop, 1000);
+
+/**
+ * 防抖函数 - 立即执行版
+ *   场景例如: 确认下单,需要立即执行,但抛弃执行连续点击的后几次动作事件
+ * @param func 真正执行的业务函数
+ * @param wait n毫秒时间内只触发第一次
+ * @returns {()=>undefined}
+ */
+function onceFunc(func, wait) {
+  let timeout,
+    context = null,
+    args;
+  wait = wait || 800;
+
+  const later = function () {
+    timeout = context = args = null;
+  };
+
+  return function () {
+    if (timeout) {
+      clearTimeout(timeout);
+    } else {
+      context = this;
+      args = arguments;
+      func.apply(context, args);
+    }
+    timeout = setTimeout(later, wait);
+  };
+}
+// window.onscroll = onceFunc(showTop, 1000);
+
+// 执行onload 方法，在IE中和Google中不同写法的融合
+ //tools代码文件如下
+ var tools = {
+		test :function(){
+		console.log('hello world')
+		}
+	}
+	
+	function loadScript(url,callback){
+		var script = document.createElement('script');
+	  	script.type = 'text/javascript';
+	
+		if(script.readyState) {
+			script.onreadystatechange = function(){
+			if(script.readyState == 'complete' || script.readyState == 'loaded'){
+				tools[callback]();
+				}
+			}
+		}else{
+			script.onload = function(){
+			tools[callback]();
+		}
+	}
+	script.src = 'url'; 
+	// document.getElementsByTagName('head').appendChild(script);
+}
+
+loadScript(tools.js ,'test');
+
+
+
+</script>
+</html>
