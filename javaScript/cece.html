@@ -309,7 +309,9 @@ function onceFunc(func, wait) {
 
 loadScript(tools.js ,'test');
 
-
+// Xss 跨站脚本攻击
+// 原理： 恶意攻击者往web页面插入恶意可执行网页脚本代码，当用户浏览该页面时，嵌入其中web里面的脚本代码会被执行，从而可达到攻击者盗取
+// 用户信息或者其他侵犯用户安全隐私的目的。
 
 </script>
 </html>

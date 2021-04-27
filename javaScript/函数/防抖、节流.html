@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>防抖、节流</title>
+</head>
+<body>
+  <!-- 
+    防抖：
+    触发高频事件后n秒后函数只会执行一次，如果n秒内高频事件再次被触发，则需要重新计算时间
+   -->
+   <!-- 
+     节流：
+     高频事件触发，但在n秒内只会执行一次，所以节流会稀释函数的执行频率
+    -->
+   <div>
+     <input id="inp">
+   </div>
+   <div style="height: 1000px;">
+
+   </div>
+</body>
+<script>
+  // 防抖
+  function debounce(fn, s){
+    var timeout = null
+    return function(){
+      // 每当用户输入的时候就把前一个clear
+      clearTimeout(timeout)
+    // 创建一个新的setTimeout 这样就能保证输入字符串后的interval间隔内如果还有字符输入的话，就不执行fn 
+      timeout = setTimeout(()=>{
+        fn.apply(this, arguments)
+      },s)
+    }
+  }
+  function say(){console.log('防抖成功'+'debounce success')}
+  var inp =document.getElementById('inp')
+  inp.addEventListener('input', debounce(say,1000))
+
+  // 节流
+  function throttle(fn, s){
+    // 利用闭包创建一个标记
+    var cantrue = true
+    return function(){
+      // 在函数开头判断标记是否为true，不为true则return
+      if(!cantrue) return
+      // 立即设置为false
+      cantrue = false
+      setTimeout(()=>{
+        fn.apply(this, arguments)
+         // 最后在setTimeout执行完毕后再把标记设置为true表示可以执行下一次循环了，当定时器没有执行的时候标记为false
+        cantrue = true
+      },s)
+    }
+  }
+  function sayHi(e) {
+ console.log(e.target.innerWidth, e.target.innerHeight)
+}
+window.addEventListener('resize', throttle(sayHi,1000));
+
+</script>
+<script>
+  // 防抖
+  /**
+   * 在第一次触发事件时，不立即执行函数，而是给出一个期限值比如200ms，
+   * 如果在200ms内没有再次触发事件，那么就执行函数，
+   * 如果在200ms内又触发了事件，那么当前的计时取消，重新计时；
+   * 
+   * 效果：
+   * 如果短时间内大量触发同一事件，只会执行一次。
+   * */ 
+  /**
+ * 防抖函数 - 延迟执行版
+ *   场景介绍: 1.搜索框联想,等用户输入完毕后,延迟n秒后,检索出匹配的关键词
+ * @param func 真正执行的业务函数
+ * @param wait 延迟时间
+ * @returns {()=>undefined}
+ */
+ function  debounce(fn, delay){
+    let timer = null;//（借助闭包）定义一个变量来保存计时
+    return function(){
+      if(timer){
+        clearTimeout(timer);
+      }
+      timer = setTimeout(fn, delay);
+    }
+  }
+  // 滚动
+  function showTop(){
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    console.log('滚动条位置：' + scrollTop);
+  }
+
+  window.onscroll = debounce(showTop, 1000);
+// 结果
+//对于短时间内连续触发的事件,防抖的含义就是让某个时间期限（如上面的1000毫秒）内，事件处理函数只执行一次。
+// 弊端
+// 如果在限定时间段内，不断触发滚动事件（比如某个用户闲着无聊,按住关东不断的拖来拖去）只要不停触发，
+//理论上就永远不会输出当前距离顶部的距离。
+// 在思考：
+/**
+ * 如果方案是：即使用户不断拖动滚动条，也能在某个时间间隔之后给出反馈
+ * 
+ * 这就用到节流的思想；
+ * 我们可以设计一种类似控制阀门一样定期开放的函数，也就是让函数执行一次后，在某个时间段暂时失效，
+ * 过了这段时间后再重新激活（类似于技能冷却时间）
+ * 
+ * 效果：
+ * 如果短时间内大量触发同一事件，那么在函数执行一次之后，该函数在指定的时间期限内不再工作，直至过了这段时间才重新生效。
+ * 
+ * 实现：
+ * 这里借助setTimeOut来做一个简单的实现，加上一个状态位 valid 来表示当前函数是否处于工作状态：
+ * 
+ * */ 
+function throttle(fn, delay){
+  let valid = true;
+  return function(){
+    if(!valid){
+      // 休息时间，暂时不接客
+      return false; 
+    }
+    // 否则：工作时间，执行函数并且在间隔期内把状态位设为无效
+    valid = false;
+    setTimeout(()=>{
+      fn();
+      valid = true;
+    },delay)
+  }
+}
+window.onscroll = throttle(showTop, 1000);
+
+/**
+ * 防抖函数 - 立即执行版
+ *   场景例如: 确认下单,需要立即执行,但抛弃执行连续点击的后几次动作事件
+ * @param func 真正执行的业务函数
+ * @param wait n毫秒时间内只触发第一次
+ * @returns {()=>undefined}
+ */
+function onceFunc(func, wait) {
+  let timeout,
+    context = null,
+    args;
+  wait = wait || 800;
+
+  const later = function () {
+    timeout = context = args = null;
+  };
+
+  return function () {
+    if (timeout) {
+      clearTimeout(timeout);
+    } else {
+      context = this;
+      args = arguments;
+      func.apply(context, args);
+    }
+    timeout = setTimeout(later, wait);
+  };
+}
+// window.onscroll = onceFunc(showTop, 1000);
+
+// 执行onload 方法，在IE中和Google中不同写法的融合
+ //tools代码文件如下
+//  var tools = {
+// 		test :function(){
+// 		console.log('hello world')
+// 		}
+// 	}
+	
+// 	function loadScript(url,callback){
+// 		var script = document.createElement('script');
+// 	  	script.type = 'text/javascript';
+	
+// 		if(script.readyState) {
+// 			script.onreadystatechange = function(){
+// 			if(script.readyState == 'complete' || script.readyState == 'loaded'){
+// 				tools[callback]();
+// 				}
+// 			}
+// 		}else{
+// 			script.onload = function(){
+// 			tools[callback]();
+// 		}
+// 	}
+// 	script.src = 'url'; 
+	// document.getElementsByTagName('head').appendChild(script);
+
+  // 防抖的升级版本
+  // 防抖和节流的结合体
+  // debounce 的问题在于它太有耐心了，试想，如果用户的操作十分频繁，他每次都不等debounce设置的delay时间结束就进行下一次操作，于是每次debounce都为该用户重新生成定时器，回调函数被延迟了不计其数次，频繁的延迟导致用户迟迟得不到响应，用户同样会产生“这个页面卡死了”的观感。
+  // 为了避免弄巧成拙，我们需要借力throttle的思想，打造一个有底线的 debounce----等你可以，但是我有我的原则：delay时间内，我可以为你重新生成定时器；但只要delay的时间到了，我们必须要给用户一个响应。这个throttle与debounce合体思路，已经被很多成熟前端库应用到了他们的加强版throttle函数的实现中：
+  function throttleStr(fn, delay){
+    let last = 0,timer = null;
+    return function(){
+      let context = this;
+      let args = arguments
+      let now = +new Date()
+
+      if(now - last < delay){
+        clearTimeout(timer)
+        timer = setTimeout(function(){
+          last = now
+          fn.apply(context, args)
+        },delay)
+      }else{
+        last = now
+        fn.apply(context, args)
+      }
+    }
+  }
+  // 滚动
+  function showTopR(){
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    console.log('滚动条位置throttleStr：' + scrollTop);
+  }
+  window.onscroll = throttleStr(showTopR, 2000);
+
+</script>
+</html>
